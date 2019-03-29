@@ -1,7 +1,7 @@
-from django.http import Http404
 from django.shortcuts import render
 
 from .models import Document
+
 
 def index(request):
     ctx = {}
@@ -11,5 +11,7 @@ def index(request):
             ctx['document'] = Document.objects.get(pk=request.POST['id'])
     except Document.DoesNotExist:
         ctx['message'] = 'Not found.'
+    except ValueError:
+        ctx['message'] = 'Invalid.'
 
     return render(request, 'revive/index.html', ctx)
