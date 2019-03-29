@@ -1,10 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+from django.shortcuts import render
 
 from .models import Document
 
 def index(request):
     ctx = {}
-    if 'id' in request.POST:
-        ctx['document'] = get_object_or_404(Document, pk=request.POST['id'])
+
+    try:
+        if 'id' in request.POST:
+            ctx['document'] = Document.objects.get(pk=request.POST['id'])
+    except Document.DoesNotExist:
+        ctx['message'] = 'Not found.'
 
     return render(request, 'revive/index.html', ctx)
