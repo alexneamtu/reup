@@ -8,7 +8,7 @@ def index(request):
 
     try:
         if 'id' in request.POST:
-            ctx['document'] = Document.objects.get(pk=request.POST['id'])
+            ctx['document'] = Document.objects.get(old_id=request.POST['id'])
     except Document.DoesNotExist:
         ctx['message'] = 'Not found.'
     except ValueError:

@@ -11,24 +11,25 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import re
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(_75lhnlem4*=vx_w59_&&0+_)d=u%yw0ay0xfj)&=17rn)2&5'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+_hostname = os.environ.get('REUP_HOSTNAME')
+if _hostname:
+    REUP_BASE_URL = 'https://' + _hostname
+    ALLOWED_HOSTS = [_hostname]
 
 
-# Application definition
+def bool_env(value):
+    return (value or '').lower() in ['on', 'true']
+
+
+DEBUG = bool_env(os.environ.get('DEBUG'))
+
 
 INSTALLED_APPS = [
     'revive.apps.ReviveConfig',
@@ -71,23 +72,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'reup.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'crji-snoop',
-        'USER': 'crji',
-        'PASSWORD': 'mypassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'reup',
+    },
 }
 
+# heroku-style db config
+_db = os.environ.get('REUP_DB')
+if _db:
+    dbm = re.match(
+        r'postgresql://(?P<user>[^:]+):(?P<password>[^@]+)'
+        r'@(?P<host>[^:]+):(?P<port>\d+)/(?P<name>.+)',
+        _db,
+    )
+    if not dbm:
+        raise RuntimeError("Can't parse REUP_DB value %r" % _db)
+    DATABASES['default']['HOST'] = dbm.group('host')
+    DATABASES['default']['PORT'] = dbm.group('port')
+    DATABASES['default']['NAME'] = dbm.group('name')
+    DATABASES['default']['USER'] = dbm.group('user')
+    DATABASES['default']['PASSWORD'] = dbm.group('password')
 
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -105,9 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -118,8 +122,5 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
