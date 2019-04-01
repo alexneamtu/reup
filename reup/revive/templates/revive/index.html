@@ -7,8 +7,10 @@
 {{ message }}
 
 {% if document %}
-<ul>
-    <li>MD5: {{ document.md5 }}</li>
-    <li>SHA1: {{ document.sha1 }}</li>
-</ul>
+    <div id="result">
+        <ul>
+            <li id="md5">MD5: {{ document.md5 }}</li>
+            <li id="sha1">SHA1: {{ document.sha1 }}</li>
+        </ul>
+    </div>
 {% endif %}
