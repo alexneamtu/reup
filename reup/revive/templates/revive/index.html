@@ -1,16 +1,31 @@
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="id"/>
-    <input type="submit" value="Revive">
-</form>
+{% extends 'base.html' %}
 
-{{ message }}
+{% block content %}
 
-{% if document %}
-    <div id="result">
-        <ul>
-            <li id="md5">MD5: {{ document.md5 }}</li>
-            <li id="sha1">SHA1: {{ document.sha1 }}</li>
-        </ul>
+    <div class="jumbotron mt-5">
+        <h1 class="display-4">reup</h1>
+        <p class="lead">Simple tool to search for documents by the old ID.</p>
+        <hr class="my-4">
+
+        <p>Please fill in the ID</p>
+
+        <form method="post" class="form-inline">
+            {% csrf_token %}
+            <div class="form-group mr-sm-3">
+                <input class="form-control" type="text" name="id" placeholder="ID"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Revive</button>
+        </form>
+
+        <div class="text-danger pt-2">{{ message }}</div>
+
+        {% if document %}
+            <h6 class="pt-2">Result:</h6>
+            <ul>
+            <li>MD5: <code>{{ document.md5 }}</code></li>
+            <li>SHA1: <code>{{ document.sha1 }}</code></li>
+            </ul>
+        {% endif %}
     </div>
-{% endif %}
+
+{% endblock %}

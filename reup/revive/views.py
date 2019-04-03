@@ -10,8 +10,8 @@ def index(request):
         if 'id' in request.POST:
             ctx['document'] = Document.objects.get(old_id=request.POST['id'])
     except Document.DoesNotExist:
-        ctx['message'] = 'Not found.'
+        ctx['message'] = 'ID not found.'
     except ValueError:
-        ctx['message'] = 'Invalid.'
+        ctx['message'] = 'Invalid ID.'
 
     return render(request, 'revive/index.html', ctx)

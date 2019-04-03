@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 _hostname = os.environ.get('REUP_HOSTNAME')
 if _hostname:
     REUP_BASE_URL = 'https://' + _hostname
-    ALLOWED_HOSTS = [_hostname]
+    ALLOWED_HOSTS = ['localhost', _hostname]
 
 
 def bool_env(value):
@@ -62,52 +62,15 @@ WSGI_APPLICATION = 'reup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'reup',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'database/reup',
     },
 }
 
-# heroku-style db config
-_db = os.environ.get('REUP_DB')
-if _db:
-    dbm = re.match(
-        r'postgresql://(?P<user>[^:]+):(?P<password>[^@]+)'
-        r'@(?P<host>[^:]+):(?P<port>\d+)/(?P<name>.+)',
-        _db,
-    )
-    if not dbm:
-        raise RuntimeError("Can't parse REUP_DB value %r" % _db)
-    DATABASES['default']['HOST'] = dbm.group('host')
-    DATABASES['default']['PORT'] = dbm.group('port')
-    DATABASES['default']['NAME'] = dbm.group('name')
-    DATABASES['default']['USER'] = dbm.group('user')
-    DATABASES['default']['PASSWORD'] = dbm.group('password')
-
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
