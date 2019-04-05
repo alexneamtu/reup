@@ -13,7 +13,7 @@ RUN mkdir -p /opt/hoover
 WORKDIR /opt/hoover
 
 RUN cd /opt/hoover \
-  && git clone https://96c48f089a06200e2eac4bbb03688b8b49e5e141@github.com/alexneamtu/reup.git
+  && git clone https://github.com/alexneamtu/reup.git
 
 RUN cd /opt/hoover/reup \
   && pip install pipenv waitress \
