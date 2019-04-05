@@ -63,7 +63,7 @@ WSGI_APPLICATION = 'reup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database/reup',
+        'NAME': 'database/reup.sqlite',
     },
 }
 
