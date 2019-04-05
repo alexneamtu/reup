@@ -1,14 +1,6 @@
 FROM python:3.7-stretch
 ENV PYTHONUNBUFFERED 1
 
-RUN set -e \
- && echo 'deb http://deb.debian.org/debian stretch non-free' >> /etc/apt/sources.list \
- && echo 'deb http://deb.debian.org/debian stretch-updates non-free' >> /etc/apt/sources.list \
- && echo 'deb http://security.debian.org stretch/updates non-free' >> /etc/apt/sources.list \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
- && apt-get clean && rm -rf /var/lib/apt/lists/*
-
 RUN mkdir -p /opt/hoover
 WORKDIR /opt/hoover
 
