@@ -11,4 +11,4 @@ ADD Pipfile Pipfile.lock runserver ./
 
 RUN pipenv install --system
 
-CMD /runserver
+CMD ./runserver
