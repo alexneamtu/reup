@@ -4,19 +4,11 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir -p /opt/hoover
 WORKDIR /opt/hoover
 
-RUN cd /opt/hoover \
-  && git clone https://github.com/alexneamtu/reup.git
+RUN pip install pipenv waitress
 
-RUN cd /opt/hoover/reup \
-  && pip install pipenv waitress \
-  && pipenv install --system
+ADD reup ./reup
+ADD Pipfile Pipfile.lock runserver ./
 
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.3.0/wait /wait
+RUN pipenv install --system
 
-RUN set -e \
- && echo '#!/bin/bash -e' > /runserver \
- && echo 'cd /opt/hoover/reup/reup' >> /runserver \
- && echo 'waitress-serve --port 8000 reup.wsgi:application' >> /runserver \
- && chmod +x /runserver /wait
-
-CMD /wait && /runserver
+CMD /runserver
