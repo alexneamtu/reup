@@ -6,9 +6,10 @@ WORKDIR /opt/hoover
 
 RUN pip install pipenv waitress
 
-ADD reup ./reup
-ADD Pipfile Pipfile.lock runserver ./
-
+ADD Pipfile Pipfile.lock ./
 RUN pipenv install --system
+
+ADD reup ./reup
+ADD runserver ./
 
 CMD ./runserver
