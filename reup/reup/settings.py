@@ -75,3 +75,10 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+
+if bool_env(os.environ.get('USE_X_FORWARDED_HOST')):
+    USE_X_FORWARDED_HOST = True
+
+_secure_header = os.environ.get('SECURE_PROXY_SSL_HEADER')
+if _secure_header:
+    SECURE_PROXY_SSL_HEADER = (_secure_header, 'https')
