@@ -7,15 +7,12 @@
         <p class="lead">Simple tool to search for documents by the old ID.</p>
         <hr class="my-4">
 
-        <p>
-            Please fill in the ID or Url <br/>
-            <small>If an url is provided the first digits group will be used</small>
-        </p>
-
-        <form method="post" class="form-inline">
+        <form method="post">
             {% csrf_token %}
             <div class="form-group mr-sm-3">
-                <input class="form-control" type="text" name="input" placeholder="ID/Url"/>
+                <label for="input">Search document</label>
+                <input class="form-control" type="text" name="input" placeholder="Enter ID or url"/>
+                <small id="input-help" class="form-text text-muted">Usage: Either enter an ID (e.g. 12345) or an url containing an ID (e.g. https://hoover.example.org/doc/kittens/12345/raw/lots-of-hair.pdf)</small>
             </div>
             <button type="submit" class="btn btn-primary">Revive</button>
         </form>
