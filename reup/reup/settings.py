@@ -1,5 +1,4 @@
 import os
-import re
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -18,6 +17,8 @@ def bool_env(value):
 
 DEBUG = bool_env(os.environ.get('DEBUG'))
 
+REUP_MD5_URL = os.environ.get('REUP_MD5_URL')
+REUP_SHA1_URL = os.environ.get('REUP_SHA1_URL')
 
 INSTALLED_APPS = [
     'revive.apps.ReviveConfig',

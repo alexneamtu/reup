@@ -22,8 +22,8 @@
         {% if document %}
             <h6 class="pt-2">Result:</h6>
             <ul>
-            <li>MD5: <code>{{ document.md5 }}</code></li>
-            <li>SHA1: <code>{{ document.sha1 }}</code></li>
+                <li>MD5: <a href="{{ urls.md5 }}">{{ document.md5 }}</a></li>
+                <li>SHA1: <a href="{{ urls.sha1 }}">{{ document.sha1 }}</a></li>
             </ul>
         {% endif %}
     </div>
