@@ -18,6 +18,7 @@ def bool_env(value):
 
 DEBUG = bool_env(os.environ.get('DEBUG'))
 
+REUP_DOCUMENT_URL_PREFIX = os.environ.get('REUP_DOCUMENT_URL_PREFIX')
 
 INSTALLED_APPS = [
     'revive.apps.ReviveConfig',
