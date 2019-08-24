@@ -2,6 +2,7 @@ from django.test import TestCase, override_settings
 
 from .models import Document
 
+
 class ReupTestCase(TestCase):
     def setUp(self):
         Document.objects.create(old_id=1, md5='test1', sha1='test1')
