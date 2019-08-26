@@ -22,12 +22,9 @@
         {% else %}
           <h6 class="pt-2">Result:</h6>
           <ul>
-            {% if url %}
-              <li id="new_url">New URL: <code>{{ url }}</code></li>
-            {% elif document %}
-              <li id="md5">MD5: <code>{{ document.md5 }}</code></li>
-              <li id="sha1">SHA1: <code>{{ document.sha1 }}</code></li>
-            {% endif %}
+            {% for label, url in urls %}
+              <li><a href="{{ url }}"<code>{{ label }}</code></a></li>
+            {% endfor %}
           </ul>
         {% endif %}
     </div>
