@@ -1,21 +1,41 @@
 import re
+import urllib.parse
 from django.shortcuts import render
+from django.conf import settings
 
 from .models import Document
 
 
-def index(request):
-    ctx = {}
+def match_url(document_search):
+    if document_search.startswith(settings.REUP_OLD_SERVER_URL):
+        url_match = re.search(r'https://[^/]+/doc/(.*)$', document_search)
 
-    try:
-        if 'input' in request.POST:
-            id_match = re.search(r'\d+', request.POST['input'])
-            if id_match is None:
-                raise ValueError('Could not find an ID in the input.')
-            ctx['document'] = Document.objects.get(old_id=id_match[0])
-    except Document.DoesNotExist:
-        ctx['message'] = 'ID not found.'
-    except ValueError as e:
-        ctx['message'] = e
+        if url_match:
+            url = urllib.parse.urljoin(settings.REUP_DOCUMENT_URL_PREFIX,
+                                       url_match[1])
+            return {'urls': [(url, url)]}
+
+    id_match = re.search(r'\d+', document_search)
+    if id_match:
+        document = Document.objects.filter(old_id=id_match[0]).first()
+
+        if document:
+            return {
+                'document': document,
+                'urls': [
+                    (document.md5, settings.REUP_MD5_URL.format(md5=document.md5)),
+                    (document.sha1, settings.REUP_SHA1_URL.format(sha1=document.sha1)),
+                ],
+            }
+
+    return {'error_message': 'Not Found'}
+
+
+def index(request):
+    if request.POST:
+        ctx = match_url(request.POST['input'])
+
+    else:
+        ctx = {}
 
     return render(request, 'revive/index.html', ctx)
